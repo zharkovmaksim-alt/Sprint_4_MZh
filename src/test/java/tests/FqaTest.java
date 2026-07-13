@@ -12,7 +12,7 @@ import java.time.Duration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class FaqTest {
+public class FqaTest {
 
     private WebDriver driver;
     private static final String BASE_URL = "https://qa-scooter.praktikum-services.ru/";
