@@ -10,14 +10,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class OrderPage {
-    private WebDriver driver;
 
-    private By nameField = By.xpath(".//input[@placeholder='* Имя']");
-    private By surnameField = By.xpath(".//input[@placeholder='* Фамилия']");
-    private By addressField = By.xpath(".//input[@placeholder='* Адрес: куда привезти заказ']");
-    private By metroField = By.xpath(".//input[@placeholder='* Станция метро']");
-    private By phoneField = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
-    private By nextButton = By.xpath(".//button[text()='Далее']");
+    private final WebDriver driver;
+
+    // Локаторы (вынесены в поля класса)
+    private final By nameField = By.xpath(".//input[@placeholder='* Имя']");
+    private final By surnameField = By.xpath(".//input[@placeholder='* Фамилия']");
+    private final By addressField = By.xpath(".//input[@placeholder='* Адрес: куда привезти заказ']");
+    private final By metroField = By.xpath(".//input[@placeholder='* Станция метро']");
+    private final By phoneField = By.xpath(".//input[@placeholder='* Телефон: на него позвонит курьер']");
+    private final By nextButton = By.xpath(".//button[text()='Далее']");
 
     public OrderPage(WebDriver driver) {
         this.driver = driver;
@@ -35,16 +37,16 @@ public class OrderPage {
         WebElement nextButtonElement = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.elementToBeClickable(nextButton));
 
+        // Первый клик (может быть баг в Chrome)
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", nextButtonElement);
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Ожидание для обхода бага
+        new WebDriverWait(driver, Duration.ofSeconds(1));
 
+        // Второй клик
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", nextButtonElement);
 
+        // Ожидание появления заголовка второй страницы
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.textToBePresentInElementLocated(
                         By.xpath(".//div[contains(@class, 'Order_Header__BZXOb')]"),
